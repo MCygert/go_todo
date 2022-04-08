@@ -1,15 +1,10 @@
-package cli
+package reader
 
 import (
 	"flag"
 	"fmt"
 	"time"
 )
-
-type Task struct {
-	Task      string
-	AddedDate time.Time
-}
 
 func ReadInput() (Task, error) {
 	var task string
