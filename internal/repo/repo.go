@@ -5,6 +5,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"log"
 	"todo_app/pkg/reader"
 )
 
@@ -46,4 +47,16 @@ func SaveTask(task reader.Task) {
 	if err != nil {
 		panic(err)
 	}
+}
+
+func GetAllNotExpired() ([]reader.Task, error) {
+	cursor, err := taskCollection.Find(context.TODO(), bson.M{"expired": false})
+	if err != nil {
+		log.Fatal(err)
+	}
+	var results []reader.Task
+	if err = cursor.All(context.TODO(), &results); err != nil {
+		return nil, err
+	}
+	return results, nil
 }

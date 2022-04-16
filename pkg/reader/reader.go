@@ -20,6 +20,6 @@ func ReadInput() (Task, error) {
 	if task == "" {
 		return Task{}, fmt.Errorf("pass task")
 	}
-	return Task{task, date}, nil
+	return Task{task, date, false}, nil
 
 }
