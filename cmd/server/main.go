@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"todo_app/internal/job"
 	"todo_app/internal/repo"
 )
 
@@ -19,10 +20,11 @@ func main() {
 		log.Fatal(err)
 		return
 	}
+	job.StartExpiringTasksJob()
 }
 
 func tasksIndex(w http.ResponseWriter, _ *http.Request) {
-	tasks, err := repo.AllTasks()
+	tasks, err := repo.FindAllTasks()
 	if err != nil {
 		log.Println(err)
 		http.Error(w, http.StatusText(500), 500)

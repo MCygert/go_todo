@@ -29,7 +29,7 @@ func Init() error {
 	return nil
 }
 
-func AllTasks() ([]reader.Task, error) {
+func FindAllTasks() ([]reader.Task, error) {
 	cursor, err := taskCollection.Find(context.TODO(), bson.D{})
 	if err != nil {
 		panic(err)
@@ -49,12 +49,19 @@ func SaveTask(task reader.Task) {
 	}
 }
 
-func GetAllNotExpired() ([]reader.Task, error) {
+func UpdateTask(task reader.DomainTask) {
+	_, err := taskCollection.InsertOne(context.TODO(), task)
+	if err != nil {
+		panic(err)
+	}
+}
+
+func FindAllNotExpired() ([]reader.DomainTask, error) {
 	cursor, err := taskCollection.Find(context.TODO(), bson.M{"expired": false})
 	if err != nil {
 		log.Fatal(err)
 	}
-	var results []reader.Task
+	var results []reader.DomainTask
 	if err = cursor.All(context.TODO(), &results); err != nil {
 		return nil, err
 	}
